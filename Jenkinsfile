@@ -6,7 +6,7 @@ pipeline {
             steps {
 				git branch: 'main',
 				url: 'ssh://git@gitea:22/hannes/osl_cut_off_automation.git',
-				credentialsId: 'gitea-ssh-creds'
+				credentialsId: 'ssh__gitea_jenkins'
 
                 sh '''
                     echo "Current directory:"
