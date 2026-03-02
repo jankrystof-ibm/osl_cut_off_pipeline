@@ -29,7 +29,7 @@ pipeline {
                         git clone $OSL_CUT_OFF_AUTOMATION_URL
                         OSL_CUT_OFF_AUTOMATION_REPOSITOT_DIR_NAME=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
                         echo aaaaaaa
-                        cp "$SSH_KEY" ./id_rsa"
+                        cp "$SSH_KEY" ./id_rsa
                         cat ./id_rsa
                         #cd $OSL_CUT_OFF_AUTOMATION_REPOSITOT_DIR_NAME
                         #pwd
