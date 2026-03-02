@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Docker login & pull') {
+        stage('Login into remote container image registry') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'IDENTITY_AUTOMATION_QUAY__1_USRPSWD',
@@ -20,17 +20,17 @@ pipeline {
 
         stage('Prepare Git - OSL cut-off') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'IDENTITY_AUTOMATION_QUAY__1_USRPSWD',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
+                withCredentials([sshUserPrivateKey(
+                    credentialsId: 'IDENTITY_AUTOMATION_GITHUB_1_PK',
+                    keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh '''
                         ls -la
                         git clone $OSL_CUT_OFF_AUTOMATION_URL
-                        echo konec
-                        REPOSITORY_DIR=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
-                        docker pull $OSL_CUT_OFF_AUTOMATION_CONTAINER_IMAGE
+                        OSL_CUT_OFF_AUTOMATION_REPOSITOT_DIR_NAME=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
+                        cd $OSL_CUT_OFF_AUTOMATION_REPOSITOT_DIR_NAME
+                        pwd
+                        ls -la
                     '''
                 }
             }
