@@ -28,7 +28,7 @@ pipeline {
                         ls -la
                         git clone $OSL_CUT_OFF_AUTOMATION_URL
                         echo konec
-                        ls -la
+                        ls -la $(basename $OSL_CUT_OFF_AUTOMATION_URL)
                     '''
                 }
             }
