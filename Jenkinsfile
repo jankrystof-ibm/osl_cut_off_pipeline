@@ -18,32 +18,36 @@ pipeline {
         }
 
         stage('Prepare SSH & Git') {
-            environment {
-                SSH_KEY = credentials('IDENTITY_AUTOMATION_GITHUB_1_PK')
-            }
-            steps {
-                sh '''
-                echo WORKSPACE = $WORKSPACE
-                ls $WORKSPACE
+                    steps {
+                        sh '''
+                            # vytvoření dočasného adresáře pro SSH klíč
+                            TMP_SSH_DIR=$(mktemp -d "$WORKSPACE/ssh_temp.XXXX")
+                            chmod 700 "$TMP_SSH_DIR"
 
-//                    xcp "$SSH_KEY" ~/.ssh/id_rsa
-//                    chmod 600 ~/.ssh/id_rsa
-//
-//                    mkdir -p ~/.ssh
-//                    echo "$SSH_KEY" > ~/.ssh/id_rsa
-//                    echo aaaaaa
-//                    cat ~/.ssh/id_rsa
-//                    chmod 600 ~/.ssh/id_rsa
-//                    ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
-//
-//                    git config --global user.name "$IDENTITY_AUTOMATION_GITHUB_1__NAME"
-//                    git config --global user.email "$IDENTITY_AUTOMATION_GITHUB_1__EMAIL"
-//
-//                    git clone git@github.com:jankrystof-ibm/osl_cut_off_automation.git
+                            # zkopírování privátního klíče z Jenkins credentials do temp dir
+                            cp $IDENTITY_AUTOMATION_GITHUB_1_PK $TMP_SSH_DIR/id_rsa
+                            chmod 600 "$TMP_SSH_DIR/id_rsa"
 
-                '''
-            }
-        }
+                            # přidání github.com do known_hosts v temp dir
+                            ssh-keyscan github.com >> "$TMP_SSH_DIR/known_hosts" 2>/dev/null
+
+                            # export proměnných pro git/ssh
+                            export GIT_SSH_COMMAND="ssh -i $TMP_SSH_DIR/id_rsa -o UserKnownHostsFile=$TMP_SSH_DIR/known_hosts -o StrictHostKeyChecking=yes"
+
+                            # git config z environment proměnných buildu
+                            git config --global user.name "$IDENTITY_AUTOMATION_GITHUB_1__NAME"
+                            git config --global user.email "$IDENTITY_AUTOMATION_GITHUB_1__EMAIL"
+
+                            # klon repo jen pokud složka neexistuje
+                            if [ ! -d "$WORKSPACE/osl_cut_off_automation" ]; then
+                                git clone git@github.com:jankrystof-ibm/osl_cut_off_automation.git
+                            fi
+
+                            # smazání dočasného adresáře
+                            rm -rf "$TMP_SSH_DIR"
+                        '''
+                    }
+                }
 
 //        stage('Checkout') {
 //            steps {
