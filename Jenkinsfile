@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-        stage('Prepare Git - OSL cut-off') {
+        stage('Execute OSL cut-off') {
             steps {
                 withCredentials([sshUserPrivateKey(
                     credentialsId: 'OSLCUTOFF_IDENTITY_AUTOMATION_GITHUB_1_PK',
