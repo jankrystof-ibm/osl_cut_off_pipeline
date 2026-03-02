@@ -2,20 +2,21 @@ pipeline {
     agent any
 
     stages {
-//        stage('Docker login & pull') {
-//            steps {
-//                withCredentials([usernamePassword(
-//                    credentialsId: 'IDENTITY_AUTOMATION_QUAY__1_USRPSWD',
-//                    usernameVariable: 'DOCKER_USER',
-//                    passwordVariable: 'DOCKER_PASS'
-//                )]) {
-//                    sh '''
-//                        echo "$DOCKER_PASS" | docker login quay.io -u "$DOCKER_USER" --password-stdin
-//                        docker pull quay.io/rh-ee-jkrystof/automation_osl_cutoff
-//                    '''
-//                }
-//            }
-//        }
+        stage('Docker login & pull') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'IDENTITY_AUTOMATION_QUAY__1_USRPSWD',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        CONTAINER_IMAGE_REGISTRY_HOST=$(echo "$OSL_CUT_OFF_AUTOMATION_CONTAINER_IMAGE" | awk -F/ '{print $1}')
+                        echo doing docker login into $CONTAINER_IMAGE_REGISTRY_HOST ...
+                        echo "$DOCKER_PASS" | docker login $CONTAINER_IMAGE_REGISTRY_HOST -u "$DOCKER_USER" --password-stdin
+                    '''
+                }
+            }
+        }
 
         stage('Prepare Git - OSL cut-off') {
             steps {
@@ -29,7 +30,7 @@ pipeline {
                         git clone $OSL_CUT_OFF_AUTOMATION_URL
                         echo konec
                         REPOSITORY_DIR=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
-                        docker pull quay.io/rh-ee-jkrystof/osl_cut_off_automation
+                        docker pull OSL_CUT_OFF_AUTOMATION_CONTAINER_IMAGE
                     '''
                 }
             }
