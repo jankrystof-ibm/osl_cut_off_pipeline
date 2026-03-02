@@ -25,7 +25,8 @@ pipeline {
                 sh '''
                 echo WORKSPACE = $WORKSPACE
                 ls $WORKSPACE
-//                    cp "$SSH_KEY" ~/.ssh/id_rsa
+
+//                    xcp "$SSH_KEY" ~/.ssh/id_rsa
 //                    chmod 600 ~/.ssh/id_rsa
 //
 //                    mkdir -p ~/.ssh
