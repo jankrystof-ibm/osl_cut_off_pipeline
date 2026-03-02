@@ -41,6 +41,7 @@ pipeline {
                         if [ ! -d "$WORKSPACE/osl_cut_off_automation" ]; then
                             git clone git@github.com:jankrystof-ibm/osl_cut_off_automation.git
                         fi
+                        ls -la
 
                         rm -rf "$TMP_SSH_DIR"
                     '''
