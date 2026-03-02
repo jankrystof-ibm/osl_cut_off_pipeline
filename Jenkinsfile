@@ -28,7 +28,6 @@ pipeline {
                         ls -la
                         git clone $OSL_CUT_OFF_AUTOMATION_URL
                         echo konec
-                        ls -la $(basename $OSL_CUT_OFF_AUTOMATION_URL)
                         REPOSITORY_DIR=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
                         docker pull quay.io/rh-ee-jkrystof/osl_cut_off_automation
                     '''
