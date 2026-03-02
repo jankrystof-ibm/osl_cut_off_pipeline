@@ -25,6 +25,8 @@ pipeline {
                 sh '''
                     mkdir -p ~/.ssh
                     echo "$SSH_KEY" > ~/.ssh/id_rsa
+                    echo aaaaaa
+                    cat ~/.ssh/id_rsa
                     chmod 600 ~/.ssh/id_rsa
                     ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
 
@@ -32,7 +34,7 @@ pipeline {
                     git config --global user.email "$IDENTITY_AUTOMATION_GITHUB_1__EMAIL"
 
                     git clone git@github.com:jankrystof-ibm/osl_cut_off_automation.git
-                    
+
                 '''
             }
         }
