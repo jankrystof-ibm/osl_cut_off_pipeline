@@ -13,6 +13,7 @@ pipeline {
                     pwd
                     echo "Repository content:"
                     ls -la
+					echo "aaa"
                 '''
             }
         }
