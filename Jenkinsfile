@@ -19,10 +19,18 @@ pipeline {
 
         stage('Prepare Git - OSL cut-off') {
             steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'IDENTITY_AUTOMATION_QUAY__1_USRPSWD',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
                     sh '''
                         ls -la
+                        git clone OSL_CUT_OFF_AUTOMATION_URL
+                        echo konec
+                        ls -la
                     '''
-
+                }
             }
         }
     } // stages
