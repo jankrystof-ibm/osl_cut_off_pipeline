@@ -43,44 +43,11 @@ pipeline {
                 }
             }
         }
+    }
 
-        post {
-            always {
-                deleteDir()
-            }
+    post {
+        always {
+            deleteDir()
         }
-
-
-//        stage('Checkout') {
-//            steps {
-//				git branch: 'main',
-//				url: 'ssh://git@gitea:22/hannes/osl_cut_off_automation.git',
-//				credentialsId: 'ssh__gitea_jenkins'
-//
-//                sh '''
-//                  ssh-keyscan github.com >> ~/.ssh/known_hosts
-//                  chmod 644 ~/.ssh/known_hosts
-//
-//                  # Start ssh-agent
-//                  eval "$(ssh-agent -s)"
-//
-//                  # Add key
-//                  ssh-add ~/.ssh/id_ed25519
-//                  echo "Loaded SSH identities:"
-//                  ssh-add -l
-//
-//                # Setup git identities
-//                git config --global user.name "pepa zdepa"
-//                git config --global user.email "pepa@z.depa"
-//
-//                    echo "Current directory:"
-//                    pwd
-//                    echo "Repository content:"
-//                    ls -la
-//					echo "aaa"
-//                '''
-//            }
-//        }
-
     }
 }
