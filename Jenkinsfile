@@ -18,28 +18,22 @@ pipeline {
         }
 
         stage('Prepare SSH & Git') {
+            environment {
+                SSH_KEY = credentials('IDENTITY_AUTOMATION_GITHUB_1_PK')
+            }
             steps {
-                sshagent(['IDENTITY_AUTOMATION_GITHUB_1_PK']) {
-                    sh '''
-                        # SSH setup
-                        mkdir -p ~/.ssh
-                        ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+                sh '''
+                    mkdir -p ~/.ssh
+                    echo "$SSH_KEY" > ~/.ssh/id_rsa
+                    chmod 600 ~/.ssh/id_rsa
+                    ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
 
-                        # test SSH
-                        ssh -o StrictHostKeyChecking=yes git@github.com "echo 'SSH works!'"
+                    git config --global user.name "$IDENTITY_AUTOMATION_GITHUB_1__NAME"
+                    git config --global user.email "$IDENTITY_AUTOMATION_GITHUB_1__EMAIL"
 
-                        # Git global config z environment variables
-                        git config --global user.name "$IDENTITY_AUTOMATION_GITHUB_1__NAME"
-                        git config --global user.email "$IDENTITY_AUTOMATION_GITHUB_1__EMAIL"
-
-                        # Clone repo
-                        if [ ! -d "osl_cut_off_automation" ]; then
-                            git clone git@github.com:jankrystof-ibm/osl_cut_off_automation.git
-                        fi
-                        ls -la
-                        du -sh *
-                    '''
-                }
+                    git clone git@github.com:jankrystof-ibm/osl_cut_off_automation.git
+                    
+                '''
             }
         }
 
