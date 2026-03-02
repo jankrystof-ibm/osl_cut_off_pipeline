@@ -2,6 +2,20 @@ pipeline {
     agent any
 
     stages {
+        stage('Docker login & pull') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'IDENTITY_AUTOMATION_QUAY__1_USRPSWD',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login quay.io -u "$DOCKER_USER" --password-stdin
+                        docker pull quay.io/rh-ee-jkrystof/automation_osl_cutoff
+                    '''
+                }
+            }
+        }
         stage('Checkout') {
             steps {
 				git branch: 'main',
@@ -17,5 +31,6 @@ pipeline {
                 '''
             }
         }
+
     }
 }
