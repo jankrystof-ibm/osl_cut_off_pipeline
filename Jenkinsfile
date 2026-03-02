@@ -30,7 +30,7 @@ pipeline {
                         git clone $OSL_CUT_OFF_AUTOMATION_URL
                         echo konec
                         REPOSITORY_DIR=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
-                        docker pull OSL_CUT_OFF_AUTOMATION_CONTAINER_IMAGE
+                        docker pull $OSL_CUT_OFF_AUTOMATION_CONTAINER_IMAGE
                     '''
                 }
             }
