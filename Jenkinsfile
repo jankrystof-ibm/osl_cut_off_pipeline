@@ -27,22 +27,17 @@ pipeline {
                     sh '''
 
                         git clone $OSL_CUT_OFF_AUTOMATION_URL
-                        echo 111
-                        ls -la
-                        #OSL_CUT_OFF_AUTOMATION_REPOSITORY_DIR_NAME=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
+                        OSL_CUT_OFF_AUTOMATION_REPOSITORY_DIR_NAME=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
 
-                        #cp "$SSH_KEY" ./id_rsa
+                        cp "$SSH_KEY" ./id_rsa
 
-                        #export SSH_KEY_LOCATION="$(pwd)/id_rsa"
-                        #export CONTAINER_IMAGE="$OSL_CUT_OFF_AUTOMATION_CONTAINER_IMAGE"
-                        #export CLONE_OUT_HOST="$WORKSPACE/OUT"
-                        #mkdir $CLONE_OUT_HOST
+                        export SSH_KEY_LOCATION="$(pwd)/id_rsa"
+                        export CONTAINER_IMAGE="$OSL_CUT_OFF_AUTOMATION_CONTAINER_IMAGE"
+                        export CLONE_OUT_HOST="$WORKSPACE/OUT"
+                        mkdir $CLONE_OUT_HOST
 
-                        #echo 111 $(pwd)
-                        #ls -la
-                        #ls -la $OSL_CUT_OFF_AUTOMATION_REPOSITORY_DIR_NAME
 
-                        #$OSL_CUT_OFF_AUTOMATION_REPOSITORY_DIR_NAME/run_container.sh
+                        $OSL_CUT_OFF_AUTOMATION_REPOSITORY_DIR_NAME/run_container.sh
 
                     '''
                 }
