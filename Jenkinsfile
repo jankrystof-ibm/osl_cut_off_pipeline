@@ -25,8 +25,10 @@ pipeline {
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh '''
-                        ls -la
+
                         git clone $OSL_CUT_OFF_AUTOMATION_URL
+                        echo 111
+                        ls -la
                         OSL_CUT_OFF_AUTOMATION_REPOSITOT_DIR_NAME=$(echo $OSL_CUT_OFF_AUTOMATION_URL | sed 's/.git$//' | xargs basename)
 
                         cp "$SSH_KEY" ./id_rsa
@@ -36,6 +38,8 @@ pipeline {
                         export CLONE_OUT_HOST="$WORKSPACE/OUT"
                         mkdir $CLONE_OUT_HOST
 
+                        echo 111 $(pwd)
+                        ls -la
                         $OSL_CUT_OFF_AUTOMATION_REPOSITOT_DIR_NAME/run_container.sh
 
                     '''
