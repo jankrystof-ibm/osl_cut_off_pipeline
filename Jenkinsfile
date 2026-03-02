@@ -5,7 +5,7 @@ pipeline {
         stage('Login into remote container image registry') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'IDENTITY_AUTOMATION_QUAY__1_USRPSWD',
+                    credentialsId: 'OSLCUTOFF_IDENTITY_AUTOMATION_QUAY__1_USRPSWD',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
@@ -21,7 +21,7 @@ pipeline {
         stage('Prepare Git - OSL cut-off') {
             steps {
                 withCredentials([sshUserPrivateKey(
-                    credentialsId: 'IDENTITY_AUTOMATION_GITHUB_1_PK',
+                    credentialsId: 'OSLCUTOFF_IDENTITY_AUTOMATION_GITHUB_1_PK',
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh '''
