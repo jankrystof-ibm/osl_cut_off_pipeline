@@ -17,7 +17,7 @@ pipeline {
             }
         }
 
-        stage('Prepare SSH & Git') {
+        stage('Prepare Git - OSL cut-off') {
             steps {
                 withCredentials([sshUserPrivateKey(
                     credentialsId: 'IDENTITY_AUTOMATION_GITHUB_1_PK',
@@ -27,7 +27,7 @@ pipeline {
                         TMP_SSH_DIR=$(mktemp -d "$WORKSPACE/ssh_temp.XXXX")
                         chmod 700 "$TMP_SSH_DIR"
 
-                        # zkopírování do temp dir (volitelné)
+                        # copy ssh private key
                         cp "$SSH_KEY" "$TMP_SSH_DIR/id_rsa"
                         chmod 600 "$TMP_SSH_DIR/id_rsa"
 
@@ -38,16 +38,18 @@ pipeline {
                         git config --global user.name "$IDENTITY_AUTOMATION_GITHUB_1__NAME"
                         git config --global user.email "$IDENTITY_AUTOMATION_GITHUB_1__EMAIL"
 
-                        if [ ! -d "$WORKSPACE/osl_cut_off_automation" ]; then
-                            git clone git@github.com:jankrystof-ibm/osl_cut_off_automation.git
-                        fi
-                        ls -la
-
-                        rm -rf "$TMP_SSH_DIR"
+                        git clone $OSL_CUT_OFF_AUTOMATION_URL
                     '''
                 }
             }
         }
+
+        post {
+            always {
+                deleteDir()
+            }
+        }
+
 
 //        stage('Checkout') {
 //            steps {
