@@ -24,6 +24,8 @@ pipeline {
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh '''
+                        echo WORKSPACE $WORKSPACE
+                        ls -ls $WORKSPACE
                         TMP_SSH_DIR=$(mktemp -d "$WORKSPACE/ssh_temp.XXXX")
                         chmod 700 "$TMP_SSH_DIR"
 
