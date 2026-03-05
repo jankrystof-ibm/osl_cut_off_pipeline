@@ -34,8 +34,8 @@ pipeline {
                         export SSH_KEY_LOCATION="$(pwd)/id_rsa"
                         export CONTAINER_IMAGE="$OSL_CUT_OFF_AUTOMATION_CONTAINER_IMAGE"
                         export CLONE_OUT_HOST="$WORKSPACE/OUT"
-                        export GIT_USER_NAME=IDENTITY_AUTOMATION_GITHUB_1__NAME
-                        export GIT_USER_EMAIL=IDENTITY_AUTOMATION_GITHUB_1__EMAIL
+                        export GIT_USER_NAME=$IDENTITY_AUTOMATION_GITHUB_1__NAME
+                        export GIT_USER_EMAIL=$IDENTITY_AUTOMATION_GITHUB_1__EMAIL
                         mkdir $CLONE_OUT_HOST
 
 
